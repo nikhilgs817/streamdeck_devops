@@ -1,0 +1,11 @@
+{
+  "InstallerId": "DevOpsDeck",
+  "Name": "DevOps Deck",
+  "PluginId": "com.windowstoolkit.devops",
+  "PluginFolder": "devops",
+  "Profile": "profiles/DevOps",
+  "Version": "1.0.0.0",
+  "Repository": "nikhilgs817/streamdeck_devops",
+  "RetiredPluginIds": [],
+  "PackageSha256": "a88fd88278d4d209bbae24ca625b6734aea6a43afec27b1a4b8e613244694e82"
+}
