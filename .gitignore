@@ -1,0 +1,22 @@
+node_modules/
+dist/
+test-output/
+plugins/*/*.sdPlugin/
+plugins/*/.profile-build/
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.streamDeckProfile
+*.streamDeckPlugin
+*.zip
+__pycache__/
+
+# Only build tools for this plugin are published.
+tools/*
+!tools/common.mjs
+!tools/clean.mjs
+
+!tools/build-installer.mjs
+!tools/test-installer.ps1
