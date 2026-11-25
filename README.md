@@ -44,7 +44,7 @@ Drag a key onto the deck, then paste the page's address from your browser into i
 - It is encrypted with Windows (DPAPI) for your Windows account and bound to that one server. Another Windows user, or a copied settings file, can't read it.
 - It is never stored in the key's settings, in exported profiles or in logs.
 - It is only ever sent to the server you configured, over the address you typed, and the plugin never follows a redirect to another site.
-- Keys for the same server share one token, so you paste it once. **Remove** deletes it.
+- Keys for the same server share one token, so you paste it once. **Clear** deletes it.
 
 **Kubernetes and CloudWatch** use your own `kubectl` and `aws` command-line tools and their existing sign-in (kubeconfig, AWS profiles or SSO). No token is stored by the plugin. Install the tool and sign in once in a terminal; the key then shows its status.
 
