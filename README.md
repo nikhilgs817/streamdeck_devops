@@ -50,6 +50,23 @@ Drag a key onto the deck, then paste the page's address from your browser into i
 
 **Company certificates.** Servers signed by your company's own certificate authority work when Windows trusts that certificate (the plugin reads Windows' trusted roots). **Self-signed OK** is there only for a lab server without a proper certificate.
 
+## Key settings
+
+Every key also has **Check every (s)** (60 by default, 15 at least) and the **Look** settings below. Keys that talk to your own servers have **Self-signed OK** (leave it off unless the server uses its own certificate that Windows doesn't trust).
+
+| Key | Settings | Token (where to create it, and the scope) |
+|---|---|---|
+| **Jenkins Job** | Job page, User ID, Parameters (optional), Hold to start a build | Jenkins › your name › Security › API Token. Needed to start builds and for private jobs |
+| **Jenkins Health** | View page (a view, a folder or the Jenkins home page), User ID | Same Jenkins API token; only for a private view |
+| **GitLab Pipeline** | Project page, Branch, Hold to run a pipeline | GitLab › Preferences › Access tokens: `read_api` to read, `api` to run pipelines. Needed for private projects |
+| **GitHub Actions** | Repository, Workflow file (needed to run it from the key), Branch, Hold to run the workflow | GitHub › Settings › Developer settings › Fine-grained token: Actions read (write to run). Needed for private repos and to run workflows |
+| **Merge Requests** | GitLab server (gitlab.com by default), Count: waiting for my review, assigned to me or opened by me | GitLab access token with `read_api`. Required |
+| **Pull Requests** | GitHub server (change only for GitHub Enterprise Server), Count: waiting for my review, assigned to me or opened by me | Fine-grained token with Pull requests read. Required |
+| **Quality Gate** | Project page (or server address plus Project key), Branch | SonarQube › My Account › Security › Generate token. Needed for private projects |
+| **Ansible Job** | Template page, Hold to launch the template | AWX › your user › Tokens › Add, scope Write to launch. Required |
+| **Kubernetes Pods** | Namespace (`*` for every namespace), Context | None: uses your own `kubectl` sign-in |
+| **CloudWatch Alarms** | Region (us-east-1 by default), AWS profile | None: uses your own `aws` CLI sign-in |
+
 ## What the key tells you
 
 | Key shows | Means |
@@ -70,7 +87,31 @@ Drag a key onto the deck, then paste the page's address from your browser into i
 
 ![Looks](docs/images/styles.png)
 
-**Glass** is the default: frosted dark keys whose colour follows the status, a soft rim light and an animated icon. Pick another look for one key, or press **Use this look on all keys** in any key's settings. The looks are the same as in Windows Toolkit: Glass, Vivid, Neon, Pro and Mono, plus your own colours. When Windows' "Animation effects" is off, keys stay still.
+**Glass** is the default: frosted dark keys whose colour follows the status, a soft rim light and an animated icon. The design is the same as [Windows Toolkit](https://github.com/nikhilgs817/windows_toolkit)'s. Select a key and open **Look**:
+
+| Setting | Choices |
+|---|---|
+| **Style** | Glass (default), Vivid, Neon, Mono or Pro |
+| **Label** | Your own text (up to 18 letters, fitted to the key), Auto case / Title Case / UPPER CASE, or **Hide** |
+| **Picture** | **Use my own picture…** (PNG, JPEG, GIF, SVG, WebP or BMP). **Remove picture** goes back to the drawn icon |
+| **Animation** | Full, Glow only, Icon only or Still, at Slow, Calm (default), Normal or Fast |
+| **Glow** | Subtle, Normal or Bold, plus **Ripple when pressed** |
+| **Colour** | Leave it unset and the status colours the key (green, blue, amber, red). Picking one of the 42 themes, or two colours of your own with **Use these colours**, keeps that colour whatever the status. **Back to theme** removes your own colours |
+| **Icon** | Swap the drawing for any of 90+ icons |
+
+**Use this look on all keys** copies the style, animation, glow, label case and ripple to every DevOps Deck key. Colours, icons and labels stay as they are. **Reset look** (under the preview) returns a key to the defaults. Keys stay still while Windows **Animation effects** is off, unless you untick **Keep keys still when Windows animations are off**.
+
+## Troubleshooting
+
+- **The key shows SET UP.** Open its settings and paste the page address from your browser.
+- **ADD TOKEN / CHECK TOKEN.** Paste a token in **Token** and press **Save**. CHECK TOKEN means the server refused it: it expired, was revoked or lacks the scope in [Key settings](#key-settings). Create a new one and save it again; keys on the same server pick it up.
+- **Holding the key doesn't start anything.** Check **Hold to …** is ticked and the token has write scope (Jenkins API token, GitLab `api`, GitHub Actions write, AWX Write). GitHub Actions also needs the **Workflow file** and a `workflow_dispatch` trigger in that workflow.
+- **CERTIFICATE.** Windows doesn't trust the server's certificate. Ask IT to install your company's root certificate in Windows, or, for a lab server only, tick **Self-signed OK**.
+- **OFFLINE / TIMED OUT.** The server or tool didn't answer (VPN off, server down). The key retries by itself, waiting longer each time (up to 15 minutes). Press it to open the page and check.
+- **INSTALL KUBECTL / INSTALL AWS CLI / SIGN IN.** Install the tool, then sign in once in a terminal (for example `aws sso login`, or check `kubectl get pods` works). The key picks it up on its next check.
+- **Wrong numbers on Merge Requests / Pull Requests.** Check **Count** and that the token belongs to you; the counts are for the token's user.
+- **A key moved to another PC or Windows user shows ADD TOKEN.** That's on purpose: tokens are encrypted for one Windows account. Paste the token again.
+- **Logs** are in `%APPDATA%\Elgato\StreamDeck\Plugins\com.windowstoolkit.devops.sdPlugin\logs`; tokens never appear in them. Installer problems are covered in the [installation guide](docs/INSTALL.md).
 
 ## Privacy and safety
 
